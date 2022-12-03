@@ -7,11 +7,11 @@
     height: auto;
     background: #FFFFFF;
 }
-.spinner{
+/* .spinner{
     padding: 50px;
     background: rgba(0, 0, 0, 0.05);
     border-radius: 4px;
-}
+} */
 
 .button {
     border: none;
@@ -27,4 +27,23 @@
 
 .app-pagination {
     margin-bottom: 17px;
+}
+
+@media screen and (max-width: 420px) {
+    .movie-app {
+        width: 420px;
+        margin: 0 auto;
+    }
+
+    .ant-input {
+        margin: auto;
+        display: flex;
+        align-items: center;
+        width: 388px;
+        height: 40px;
+    }
+
+    .movie-card {
+        max-width: 388px;
+    }
 }

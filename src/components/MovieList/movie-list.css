@@ -6,3 +6,13 @@
     background: #FFFFFF;
     justify-content: center;
 }
+
+@media screen and (max-width: 420px) {
+    .movie-list  {
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        background: #FFFFFF;
+        justify-content: center;
+    }
+}

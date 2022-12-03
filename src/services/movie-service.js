@@ -17,6 +17,19 @@ export default class MovieService {
     return res.results.map(this._transformMovie);
   }
 
+  async getMovies(string, number) {
+    let res;
+    if (string === '') {
+      res = await this.getResource(`search/movie?api_key=${this._apiKey}&language=en-US&query=return&page=${number}`);
+      return res.results.map(this._transformMovie);
+    } else {
+      res = await this.getResource(
+        `search/movie?api_key=${this._apiKey}&language=en-US&query=${string}&page=${number}`,
+      );
+      return res.results.map(this._transformMovie);
+    }
+  }
+
   _transformMovie = (mov) => {
     return {
       id: mov.id,

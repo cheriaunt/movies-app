@@ -1,19 +1,24 @@
 import React, { Component } from 'react';
-// import { Spin } from 'antd';
+import { Alert } from 'antd';
 
 import Movie from '../Movie';
-// import Error from '../Error';
-// import Spinner from '../Spinner';
 import './movie-list.css';
-import MovieService from '../../services/movie-service';
 
 export default class MovieList extends Component {
-  movieService = new MovieService();
-
   render() {
-    const elMov = this.props.moviesArr.map((el) => {
+    const { moviesArr } = this.props;
+    if (moviesArr.length === 0) {
+      return (
+        <Alert
+          message='Поиск не дал результатов.'
+          description='Проверьте правильно ли вы ввели название фильма.'
+          type='info'
+          closable
+        />
+      );
+    }
+    const elMov = moviesArr.map((el) => {
       const { title, id, overview, releaseDate, posterPath, voteAverage } = el;
-      const { error, loading } = this.props;
 
       return (
         <div className='movie-card' key={id}>
@@ -24,8 +29,6 @@ export default class MovieList extends Component {
             overview={overview}
             releaseDate={releaseDate}
             posterPath={posterPath}
-            loading={loading}
-            error={error}
             voteAverage={voteAverage}
           />
         </div>

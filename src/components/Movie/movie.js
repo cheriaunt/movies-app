@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import { format } from 'date-fns';
 
 import './movie.css';
 export default class Movie extends Component {
   render() {
     const { title, overview, releaseDate, voteAverage, posterPath } = this.props;
-
+    const date = format(new Date(releaseDate), 'MMMM dd, yyyy');
     const description = overview.slice(0, overview.slice(0, 100).lastIndexOf(' '));
     return (
       <div className='view'>
@@ -13,7 +14,7 @@ export default class Movie extends Component {
         </div>
         <div className='description'>
           <h1 className='movie-title'>{`${title}`}</h1>
-          <span className='movie-date-exit'>{`${releaseDate}`}</span>
+          <span className='movie-release'>{`${date}`}</span>
           <span className='rating'>{`${voteAverage}`}</span>
           <div className='movie-genres'>
             <div className='movie-genre'>Action</div>
