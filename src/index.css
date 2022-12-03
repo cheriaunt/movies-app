@@ -18,3 +18,8 @@ body {
   padding: 0;
 }
 
+@media screen and (min-width: 420px) {
+  body {
+    margin: 0 auto;
+  }
+}

@@ -3,7 +3,7 @@ import React from 'react';
 import './spinner.css';
 const Spinner = () => (
   <Space direction='vertical' style={{ width: '100%' }}>
-    <Spin tip='Loading...' className='spinner'>
+    <Spin tip='Loading...'>
       <Alert message='Идёт загрузка' description='Пожалуйста, подождите.' type='info' />
     </Spin>
   </Space>

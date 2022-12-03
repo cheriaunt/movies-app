@@ -4,6 +4,7 @@ import './movie.css';
 export default class Movie extends Component {
   render() {
     const { title, overview, releaseDate, voteAverage, posterPath } = this.props;
+
     const description = overview.slice(0, overview.slice(0, 100).lastIndexOf(' '));
     return (
       <div className='view'>
@@ -24,3 +25,9 @@ export default class Movie extends Component {
     );
   }
 }
+
+// const { loading, error } = this.prors;
+//       const hasData = !(loading || error);
+//       const errorMessage = error ? <Error /> : null;
+//       const spinner = loading ? <Spin /> : null;
+//       const content = hasData ? (

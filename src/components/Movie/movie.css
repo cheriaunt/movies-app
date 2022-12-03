@@ -16,6 +16,7 @@ h1 {
     line-height: 28px;
     max-width: 210px;
 }
+
 .view {
     position: relative;
     display: flex;
