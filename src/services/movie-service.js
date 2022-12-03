@@ -30,6 +30,11 @@ export default class MovieService {
     }
   }
 
+  async getGuestSession() {
+    const res = await this.getResource(`authentication/guest_session/new?api_key=${this._apiKey}`);
+    return res.results;
+  }
+
   _transformMovie = (mov) => {
     return {
       id: mov.id,
