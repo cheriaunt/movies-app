@@ -7,16 +7,16 @@
     height: auto;
     background: #FFFFFF;
 }
-/* .spinner{
-    padding: 50px;
-    background: rgba(0, 0, 0, 0.05);
-    border-radius: 4px;
-} */
 
 .button {
     border: none;
 }
 
+.ant-tabs-nav::before {
+    width: 129px;
+    /*align-self: center;*/
+    margin: 0 auto;
+}
 .ant-input {
     margin: auto;
     display: flex;

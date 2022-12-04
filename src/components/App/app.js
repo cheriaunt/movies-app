@@ -38,15 +38,7 @@ export default class App extends Component {
     this.setState({ loading: true });
   }
 
-  componentDidUpdate(prevState) {
-    if (this.state.currentPage === prevState.currentPage) {
-      this.state.activeKey === '1'
-        ? this.updateMovie(this.state.inputValue, this.state.currentPage)
-        : this.updateRateMovie(sessionStorage.getItem('guestSessionId'), this.state.currentPage);
-    }
-  }
   changeTab = (activeKey) => {
-    console.log(activeKey);
     activeKey === '1'
       ? this.updateMovie(this.state.inputValue, this.state.currentPage)
       : this.updateRateMovie(sessionStorage.getItem('guestSessionId'), this.state.currentPage);
@@ -123,6 +115,7 @@ export default class App extends Component {
       error,
       genres,
       activeKey,
+      inputValue,
     } = this.state;
 
     const hasData = !(loading || error);
@@ -153,6 +146,7 @@ export default class App extends Component {
         <Online>
           <div className='movie-app'>
             <Tabs
+              className='button'
               defaultActiveKey='1'
               activeKey={this.state.activeKey}
               centered
@@ -181,10 +175,10 @@ export default class App extends Component {
               <Pagination
                 size='small'
                 total={50}
-                onChange={() =>
+                onChange={
                   activeKey === '1'
-                    ? this.updateMovie(this.state.inputValue, this.state.currentPage)
-                    : this.updateRateMovie(sessionStorage.getItem('guestSessionId'), this.state.currentPage)
+                    ? (currentPage) => this.updateMovie(inputValue, currentPage)
+                    : (currentPage) => this.updateRateMovie(sessionStorage.getItem('guestSessionId'), currentPage)
                 }
               />
             </div>

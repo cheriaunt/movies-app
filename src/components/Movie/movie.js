@@ -20,7 +20,7 @@ export default class Movie extends Component {
     try {
       date = format(new Date(releaseDate), 'MMMM dd, yyyy');
     } catch (error) {
-      console.log('хуй');
+      console.log('Отловлена ошибка формата времени');
     }
 
     const description = overview.slice(0, overview.slice(0, 90).lastIndexOf(' '));
