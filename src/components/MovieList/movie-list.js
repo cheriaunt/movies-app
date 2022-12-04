@@ -18,7 +18,7 @@ export default class MovieList extends Component {
       );
     }
     const elMov = moviesArr.map((el) => {
-      const { title, id, overview, releaseDate, posterPath, voteAverage } = el;
+      const { title, id, overview, releaseDate, posterPath, voteAverage, genre } = el;
 
       return (
         <div className='movie-card' key={id}>
@@ -30,6 +30,7 @@ export default class MovieList extends Component {
             releaseDate={releaseDate}
             posterPath={posterPath}
             voteAverage={voteAverage}
+            genre={genre}
           />
         </div>
       );

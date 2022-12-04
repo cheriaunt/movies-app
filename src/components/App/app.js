@@ -13,17 +13,24 @@ import { MovieServiceProvider } from '../MovieServiceContext';
 
 export default class App extends Component {
   page = 1;
+
   movieService = new MovieService();
+
   state = {
     moviesArr: [],
+    genres: [],
     loading: true,
     error: false,
     currentPage: this.page,
     inputValue: 'return',
+    guestId: '',
   };
 
   componentDidMount() {
+    this.guestSession();
     this.updateMovie(this.state.inputValue, this.state.currentPage);
+
+    this.getMovieGenres();
     this.setState({ loading: true });
   }
 
@@ -47,8 +54,15 @@ export default class App extends Component {
     });
   };
 
-  updateMovie(string, number) {
-    this.movieService.getMovies(string, number).then(this.onMovieLoaded).catch(this.onError);
+  onGenresLoaded = (genres) => {
+    this.setState({
+      genres,
+      error: false,
+    });
+  };
+
+  updateMovie(string, page) {
+    this.movieService.getMovies(string, page).then(this.onMovieLoaded).catch(this.onError);
   }
 
   setValue = debounce((e) => {
@@ -60,9 +74,29 @@ export default class App extends Component {
     });
   }, 1000);
 
+  guestSession = () => {
+    this.movieService.getGuestSession().then((guestSession) => sessionStorage.setItem('guestSessionId', guestSession));
+  };
+
+  getMovieGenres = () => {
+    this.movieService.getGenres().then(this.onGenresLoaded).catch(this.onError);
+  };
+
   render() {
-    const { moviesArr, loading, id, title, overview, releaseDate, posterPath, voteAverage, error, inputValue } =
-      this.state;
+    const {
+      moviesArr,
+      loading,
+      id,
+      title,
+      overview,
+      releaseDate,
+      posterPath,
+      voteAverage,
+      genre,
+      error,
+      inputValue,
+      genres,
+    } = this.state;
 
     const hasData = !(loading || error);
     const errorMessage = error ? <Error /> : null;
@@ -78,13 +112,14 @@ export default class App extends Component {
           releaseDate={releaseDate}
           posterPath={posterPath}
           voteAverage={voteAverage}
+          genre={genre}
           error={error}
           setValue={this.setValue}
         />
       </React.Fragment>
     ) : null;
     return (
-      <MovieServiceProvider value={this.movieService}>
+      <MovieServiceProvider value={genres}>
         <Online>
           <div className='movie-app'>
             <Input className='ant-input' placeholder='Type to search...' onChange={(e) => this.setValue(e)} autoFocus />

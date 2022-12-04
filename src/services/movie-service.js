@@ -10,40 +10,44 @@ export default class MovieService {
     return await res.json();
   }
 
-  async getAllMovies() {
-    const res = await this.getResource(
-      `search/movie?api_key=${this._apiKey}&language=en-US&query=return&page=1&include_adult=false`,
-    );
-    return res.results.map(this._transformMovie);
-  }
-
-  async getMovies(string, number) {
+  async getMovies(string, page) {
     let res;
     if (string === '') {
-      res = await this.getResource(`search/movie?api_key=${this._apiKey}&language=en-US&query=return&page=${number}`);
+      res = await this.getResource(`search/movie?api_key=${this._apiKey}&language=en-US&query=return&page=${page}`);
       return res.results.map(this._transformMovie);
     } else {
-      res = await this.getResource(
-        `search/movie?api_key=${this._apiKey}&language=en-US&query=${string}&page=${number}`,
-      );
+      res = await this.getResource(`search/movie?api_key=${this._apiKey}&language=en-US&query=${string}&page=${page}`);
       return res.results.map(this._transformMovie);
     }
   }
 
   async getGuestSession() {
     const res = await this.getResource(`authentication/guest_session/new?api_key=${this._apiKey}`);
-    return res.results;
+    return res.guest_session_id;
   }
 
-  _transformMovie = (mov) => {
+  async getGenres() {
+    const res = await this.getResource(`genre/movie/list?api_key=${this._apiKey}&language=en-US`);
+    return res.genres.map(this._transformGenre);
+  }
+
+  _transformMovie = (movie) => {
     return {
-      id: mov.id,
-      title: mov.title,
-      overview: mov.overview,
-      releaseDate: mov.release_date,
-      posterPath: `https://image.tmdb.org/t/p/original${mov.poster_path}`,
-      voteAverage: mov.vote_average,
-      currentPage: mov.page,
+      id: movie.id,
+      title: movie.title,
+      genre: movie.genre_ids,
+      overview: movie.overview,
+      releaseDate: movie.release_date,
+      posterPath: `https://image.tmdb.org/t/p/original${movie.poster_path}`,
+      voteAverage: movie.vote_average,
+      currentPage: movie.page,
+    };
+  };
+
+  _transformGenre = (genre) => {
+    return {
+      idGenre: genre.id,
+      nameGenre: genre.name,
     };
   };
 }
