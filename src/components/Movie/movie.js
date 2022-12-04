@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
 import { format } from 'date-fns';
-import { Progress } from 'antd';
+import { Rate, Progress } from 'antd';
 
+import MovieService from '../../services/movie-service';
 import { MovieServiceConsumer } from '../MovieServiceContext';
 
 import './movie.css';
 export default class Movie extends Component {
+  movieService = new MovieService();
+
+  setRate = (id, rate) => {
+    localStorage.setItem(id, JSON.stringify(rate));
+    this.movieService.setRateMovie(id, rate, sessionStorage.getItem('guestSessionId')).then();
+  };
+
   render() {
-    const { title, overview, releaseDate, voteAverage, posterPath, genre } = this.props;
+    const { id, title, overview, releaseDate, voteAverage, posterPath, genre } = this.props;
     let date;
     try {
       date = format(new Date(releaseDate), 'MMMM dd, yyyy');
@@ -15,7 +23,10 @@ export default class Movie extends Component {
       console.log('хуй');
     }
 
-    const description = overview.slice(0, overview.slice(0, 130).lastIndexOf(' '));
+    const description = overview.slice(0, overview.slice(0, 90).lastIndexOf(' '));
+
+    const defaultValueRate = !localStorage.getItem(id) ? 0 : localStorage.getItem(id);
+
     if (voteAverage >= 0 && voteAverage < 3) {
       this.progress = (
         <Progress
@@ -98,6 +109,7 @@ export default class Movie extends Component {
           <span className='movie-release'>{`${date}`}</span>
           <div className='movie-genres'>{genreList}</div>
           <p className='movie-description'>{`${description} ...`}</p>
+          <Rate defaultValue={defaultValueRate} count={10} onChange={(rate) => this.setRate(id, rate)} />
         </div>
       </div>
     );

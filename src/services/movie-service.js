@@ -31,6 +31,34 @@ export default class MovieService {
     return res.genres.map(this._transformGenre);
   }
 
+  async getRateMovies(guestSessionId, page) {
+    const res = await fetch(
+      `${this._apiBase}guest_session/${guestSessionId}/rated/movies?api_key=${this._apiKey}&page=${page}`,
+    );
+    if (!res.ok) {
+      throw new Error(`Could not fetch getRateMovies, received ${res.status}`);
+    }
+    const rateMovies = await res.json();
+    return rateMovies.results.map(this._transformRateMovie);
+  }
+  async setRateMovie(id, rate, guestSessionId) {
+    let res = await fetch(
+      `${this._apiBase}movie/${id}/rating?api_key=${this._apiKey}&guest_session_id=${guestSessionId}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json;charset=utf-8' },
+        body: JSON.stringify({
+          value: `${rate}`,
+        }),
+      },
+    );
+    if (!res.ok) {
+      throw new Error(`Could not fetch setRateMovie, received ${res.status}`);
+    }
+    const setRate = await res.json();
+    return setRate;
+  }
+
   _transformMovie = (movie) => {
     return {
       id: movie.id,
@@ -48,6 +76,19 @@ export default class MovieService {
     return {
       idGenre: genre.id,
       nameGenre: genre.name,
+    };
+  };
+
+  _transformRateMovie = (rateMovie) => {
+    return {
+      id: rateMovie.id,
+      title: rateMovie.title,
+      genre: rateMovie.genre_ids,
+      overview: rateMovie.overview,
+      releaseDate: rateMovie.release_date,
+      posterPath: `https://image.tmdb.org/t/p/original${rateMovie.poster_path}`,
+      voteAverage: rateMovie.vote_average,
+      currentPage: rateMovie.page,
     };
   };
 }
