@@ -39,8 +39,10 @@ export default class MovieService {
       throw new Error(`Could not fetch getRateMovies, received ${res.status}`);
     }
     const rateMovies = await res.json();
-    return rateMovies.results.map(this._transformRateMovie);
+    const arrRateMovies = rateMovies.results.map(this._transformRateMovie);
+    return { arr: arrRateMovies, totalPage: rateMovies.total_pages };
   }
+
   async setRateMovie(id, rate, guestSessionId) {
     let res = await fetch(
       `${this._apiBase}movie/${id}/rating?api_key=${this._apiKey}&guest_session_id=${guestSessionId}`,
@@ -69,6 +71,7 @@ export default class MovieService {
       posterPath: `https://image.tmdb.org/t/p/original${movie.poster_path}`,
       voteAverage: movie.vote_average,
       currentPage: movie.page,
+      totalPage: 0,
     };
   };
 
@@ -89,6 +92,7 @@ export default class MovieService {
       posterPath: `https://image.tmdb.org/t/p/original${rateMovie.poster_path}`,
       voteAverage: rateMovie.vote_average,
       currentPage: rateMovie.page,
+      totalPage: 0,
     };
   };
 }

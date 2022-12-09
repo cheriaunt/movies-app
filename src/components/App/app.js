@@ -19,6 +19,7 @@ export default class App extends Component {
   state = {
     moviesArr: [],
     rateMoviesArr: [],
+    totalPage: 50,
     genres: [],
     loading: true,
     error: false,
@@ -55,6 +56,7 @@ export default class App extends Component {
   onMovieLoaded = (moviesArr) => {
     this.setState({
       moviesArr,
+      totalPage: 50,
       loading: false,
       error: false,
     });
@@ -62,7 +64,8 @@ export default class App extends Component {
 
   onRateMovieLoaded = (rateMoviesArr) => {
     this.setState({
-      rateMoviesArr,
+      rateMoviesArr: rateMoviesArr.arr,
+      totalPage: rateMoviesArr.totalPage * 10,
       loading: false,
       error: false,
     });
@@ -116,6 +119,7 @@ export default class App extends Component {
       genres,
       activeKey,
       inputValue,
+      totalPage,
     } = this.state;
 
     const hasData = !(loading || error);
@@ -174,7 +178,7 @@ export default class App extends Component {
             <div className='movie-app-footer'>
               <Pagination
                 size='small'
-                total={50}
+                total={totalPage}
                 onChange={
                   activeKey === '1'
                     ? (currentPage) => this.updateMovie(inputValue, currentPage)
